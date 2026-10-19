@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كافيه الإسبريسو | قهوة مختصة في قلب القاهرة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        // تخصيص الألوان في Tailwind لتناسب ألوان الكافيه (بيج وبني دافئ)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coffee: {
+                            50: '#FDFBF7',
+                            100: '#F7F0E6',  // بيج فاتح/كريمي
+                            200: '#EBDCC8',  // بيج دافئ
+                            300: '#D9BE9B',  // لاتيه
+                            400: '#C29B6E',  // بيج بني
+                            500: '#A37648',  // بني فاتح
+                            600: '#845731',  // بني قهوة
+                            700: '#653F20',  // داكن
+                            800: '#4A2D15',  // بني فاخر / إسبريسو
+                            900: '#2E1A0B',  // بني شديد الداكنة
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #FDFBF7;
+            color: #2E1A0B;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F0E6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A37648;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #845731;
+        }
+    </style>
+</head>
+<body class="bg-coffee-50 text-coffee-900 antialiased selection:bg-coffee-200 selection:text-coffee-800">
+
+    <!-- Navbar / الهيدر -->
+    <header class="sticky top-0 z-50 bg-coffee-50/90 backdrop-blur-md border-b border-coffee-200/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo / الشعار -->
+                <a href="#" class="flex items-center space-x-3 space-x-reverse group">
+                    <div class="w-11 h-11 rounded-full bg-coffee-800 text-coffee-100 flex items-center justify-center shadow-md group-hover:bg-coffee-700 transition duration-300">
+                        <i class="fa-solid fa-mug-hot text-xl"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold tracking-tight text-coffee-800">إسبريسو كافيه</span>
+                        <span class="text-xs text-coffee-500 font-semibold">CAIRO ROASTERY</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation / القائمة لأجهزة الكمبيوتر -->
+                <nav class="hidden md:flex items-center space-x-8 space-x-reverse font-semibold text-coffee-700">
+                    <a href="#home" class="hover:text-coffee-500 transition-colors">الرئيسية</a>
+                    <a href="#about" class="hover:text-coffee-500 transition-colors">عن الكافيه</a>
+                    <a href="#menu" class="hover:text-coffee-500 transition-colors">قائمة المشروبات</a>
+                    <a href="#hours" class="hover:text-coffee-500 transition-colors">مواعيد العمل</a>
+                    <a href="#location" class="hover:text-coffee-500 transition-colors">الموقع</a>
+                </nav>
+
+                <!-- Actions / أزرار التواصل والسلة -->
+                <div class="hidden md:flex items-center space-x-4 space-x-reverse">
+                    <!-- Cart Trigger Button -->
+                    <button id="cartToggleBtn" onclick="toggleCartModal()" class="relative p-2.5 text-coffee-800 hover:text-coffee-600 bg-coffee-100 rounded-full transition hover:bg-coffee-200">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+
+                    <a href="https://wa.me/201000000000" target="_blank" class="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-bold text-white bg-green-600 hover:bg-green-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        <i class="fa-brands fa-whatsapp text-lg ml-2"></i>
+                        تواصل معنا
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button / زر القائمة للموبايل -->
+                <div class="flex items-center md:hidden space-x-3 space-x-reverse">
+                    <button onclick="toggleCartModal()" class="relative p-2 text-coffee-800 bg-coffee-100 rounded-full">
+                        <i class="fa-solid fa-cart-shopping text-base"></i>
+                        <span id="mobileCartBadge" class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="mobileMenuBtn" class="p-2 text-coffee-800 rounded-lg hover:bg-coffee-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu / قائمة الهواتف -->
+        <div id="mobileMenu" class="hidden md:hidden bg-coffee-50 border-b border-coffee-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-md font-semibold text-coffee-800 hover:bg-coffee-100">الرئيسية</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md font-semibold text-coffee-800 hover:bg-coffee-100">عن الكافيه</a>
+            <a href="#menu" class="mobile-nav-link block px-3 py-2 rounded-md font-semibold text-coffee-800 hover:bg-coffee-100">قائمة المشروبات</a>
+            <a href="#hours" class="mobile-nav-link block px-3 py-2 rounded-md font-semibold text-coffee-800 hover:bg-coffee-100">مواعيد العمل</a>
+            <a href="#location" class="mobile-nav-link block px-3 py-2 rounded-md font-semibold text-coffee-800 hover:bg-coffee-100">الموقع</a>
+            <div class="pt-2">
+                <a href="https://wa.me/201000000000" target="_blank" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl text-sm font-bold text-white bg-green-600 hover:bg-green-700 shadow">
+                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
+                    تواصل عبر الواتساب
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section / قسم البطل -->
+    <section id="home" class="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-coffee-100/50 to-coffee-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Text Content -->
+                <div class="space-y-6 text-center lg:text-right">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-coffee-200/60 text-coffee-800 text-sm font-semibold border border-coffee-300/50">
+                        <i class="fa-solid fa-star text-amber-600"></i>
+                        تجربة القهوة المختصة الأولين في القاهرة
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-coffee-900 leading-tight">
+                        استمتع بأفضل <br>
+                        <span class="text-coffee-600 underline decoration-coffee-300 decoration-wavy">لحظات القهوة</span> في قلب القاهرة
+                    </h1>
+                    <p class="text-lg text-coffee-700 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        نقدم لك أجواءً هادئة وفاخرة مع محاصيل قهوة أصلية ومحمصة بعناية. استرخِ مع كوبك المفضل أو أنجز أعمالك في بيئة مصممة لراحتك.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-white bg-coffee-800 hover:bg-coffee-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-center">
+                            <i class="fa-solid fa-utensils ml-2"></i>
+                            استكشف القائمة
+                        </a>
+                        <a href="#hours" class="w-full sm:w-auto px-8 py-4 rounded-full text-base font-bold text-coffee-800 bg-coffee-200/80 hover:bg-coffee-200 transition border border-coffee-300 text-center">
+                            <i class="fa-solid fa-clock ml-2"></i>
+                            مواعيد العمل
+                        </a>
+                    </div>
+
+                    <!-- Features badging -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-coffee-200/80 text-center">
+                        <div>
+                            <span class="block text-2xl font-bold text-coffee-800">100%</span>
+                            <span class="text-xs text-coffee-600 font-medium">حبوب عربية أصيلة</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-coffee-800">+15</span>
+                            <span class="text-xs text-coffee-600 font-medium">نوع مشروب فاخر</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-bold text-coffee-800">4.9 ★</span>
+                            <span class="text-xs text-coffee-600 font-medium">تقييم زوارنا</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image -->
+                <div class="relative flex justify-center">
+                    <div class="relative w-full max-w-md lg:max-w-none">
+                        <div class="absolute -inset-4 bg-coffee-300/30 rounded-3xl blur-2xl -z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=800" 
+                             alt="كافيه الإسبريسو القاهرة" 
+                             class="rounded-3xl shadow-2xl object-cover w-full h-[400px] sm:h-[500px] border-4 border-white"
+                             onerror="this.src='https://placehold.co/800x500/845731/FFF?text=Espresso+Cafe+Cairo'">
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -right-6 sm:bottom-6 sm:-right-6 bg-white p-4 rounded-2xl shadow-xl border border-coffee-100 flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-2xl">
+                                ☕
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-coffee-900">طعم ينعش حواسك</p>
+                                <p class="text-xs text-coffee-500">تحضير طازج يومياً</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section / قسم التعريف بالكاافيه -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Images Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400" 
+                         alt="قهوة مختصة" 
+                         class="rounded-2xl shadow-md w-full h-64 object-cover hover:scale-[1.02] transition duration-300"
+                         onerror="this.src='https://placehold.co/400x400/845731/FFF?text=Coffee'">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=400" 
+                         alt="أجواء الكافيه" 
+                         class="rounded-2xl shadow-md w-full h-64 object-cover mt-8 hover:scale-[1.02] transition duration-300"
+                         onerror="this.src='https://placehold.co/400x400/845731/FFF?text=Interior'">
+                </div>
+
+                <!-- Text -->
+                <div class="space-y-6">
+                    <div class="inline-block px-3 py-1 bg-coffee-100 text-coffee-800 rounded-md text-sm font-bold">
+                        قصتنا وجوهرنا
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-coffee-900">
+                        نوفر لك تجربة استثنائية تناسب ذوقك الرفيع
+                    </h2>
+                    <p class="text-coffee-700 leading-relaxed">
+                        بدأنا في قلب القاهرة بشغف تقديم القهوة الحقيقية. نختار حبوب البن بعناية فائقة من أفضل المزارع العالمية، ونقوم بتحميصها محلياً للحفاظ على إيحاءاتها الغنية والنكهة الأصيلة.
+                    </p>
+                    
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-start gap-3">
+                            <div class="p-1.5 bg-coffee-100 text-coffee-800 rounded-lg mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-coffee-900">جلسات مريحة وهادئة</h4>
+                                <p class="text-xs text-coffee-600">تصميم داخلي مستوحى من الطبيعة بلمسات دافئة وموسيقى هادئة.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="p-1.5 bg-coffee-100 text-coffee-800 rounded-lg mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-coffee-900">باريستا محترفون</h4>
+                                <p class="text-xs text-coffee-600">فريقنا متقن لفنون إعداد الإسبريسو والقهوة المقطرة بكل حب.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="p-1.5 bg-coffee-100 text-coffee-800 rounded-lg mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-coffee-900">مخبوزات طازجة يومياً</h4>
+                                <p class="text-xs text-coffee-600">تشكيلة فرنسية وشرقية مجهزة يومياً لتكمل كوب قهوتك.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section / قائمة المشروبات والأسعار -->
+    <section id="menu" class="py-20 bg-coffee-100/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Title -->
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-coffee-600 font-bold text-sm tracking-wider uppercase">استمتع بالقائمة</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-coffee-900 mt-2">قائمة المشروبات والحلويات</h2>
+                <p class="text-coffee-600 mt-3 text-sm">اختر مشروبك المفضل واستمتع بالطعم المذهل</p>
+            </div>
+
+            <!-- Categories Filter Tabs / أزرار الفلترة -->
+            <div class="flex justify-center mb-10 overflow-x-auto py-2">
+                <div class="inline-flex bg-coffee-200/60 p-1.5 rounded-2xl space-x-1 space-x-reverse">
+                    <button onclick="filterMenu('all')" class="menu-tab-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-coffee-800 text-white" data-category="all">
+                        الكل
+                    </button>
+                    <button onclick="filterMenu('hot')" class="menu-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all text-coffee-800 hover:bg-coffee-200" data-category="hot">
+                        <i class="fa-solid fa-mug-hot ml-1"></i> قهوة ساخنة
+                    </button>
+                    <button onclick="filterMenu('cold')" class="menu-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all text-coffee-800 hover:bg-coffee-200" data-category="cold">
+                        <i class="fa-solid fa-glass-water ml-1"></i> مشروبات باردة
+                    </button>
+                    <button onclick="filterMenu('sweets')" class="menu-tab-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all text-coffee-800 hover:bg-coffee-200" data-category="sweets">
+                        <i class="fa-solid fa-cookie-bite ml-1"></i> الحلويات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Cards Grid / شبكة عناصر القائمة -->
+            <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Item 1: Hot Coffee -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="hot">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=400" alt="إسبريسو" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-coffee-800/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">ساخن</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">إسبريسو سنجل / دبل</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">45 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">جرعة غنية ومكثفة من الإسبريسو المستخلص من أجود حبوب البن الـ 100% أرابيكا.</p>
+                    </div>
+                    <button onclick="addToCart('إسبريسو سنجل / دبل', 45)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 2: Hot Coffee -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="hot">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&q=80&w=400" alt="كابوتشينو" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-coffee-800/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">الأكثر طلباً</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">كابوتشينو الإسبريسو</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">65 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">مزيج متوازن بين الإسبريسو، الحليب المبخر، ورغوة الحليب الناعمة بلمسة كاكاو.</p>
+                    </div>
+                    <button onclick="addToCart('كابوتشينو الإسبريسو', 65)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 3: Hot Coffee -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="hot">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&q=80&w=400" alt="لاتيه سแปنيش" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-coffee-800/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">مميز</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">سبانيش لاتيه دافئ</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">75 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">إسبريسو كلاسيكي ممزوج بالحليب المحلى المكثف لإعطاء طعم محبب ومخملي.</p>
+                    </div>
+                    <button onclick="addToCart('سبانيش لاتيه دافئ', 75)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 4: Cold Drink -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="cold">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&q=80&w=400" alt="آيس لاتيه" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-blue-700/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">بارد</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">آيس لاتيه فانيلا</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">70 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">إسبريسو بارد مع الحليب الطازج، مكعبات الثلج ونكهة الفانيلا الطبيعية.</p>
+                    </div>
+                    <button onclick="addToCart('آيس لاتيه فانيلا', 70)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 5: Cold Drink -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="cold">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&q=80&w=400" alt="موهيتو" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-blue-700/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">منعش</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">موهيتو بالنعناع والليمون</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">60 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">مزيج منعش من الصودا، النعناع الطازج، شرائح الليمون و سيروب السكر.</p>
+                    </div>
+                    <button onclick="addToCart('موهيتو بالنعناع والليمون', 60)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 6: Sweets -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="sweets">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400" alt="كرواسون" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-amber-700/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">مخبوزات</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">كرواسون بالزبدة والشكولاتة</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">50 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">كرواسون فرنسي هش ومقرمش محشو بالشكولاتة البلجيكية الغنية.</p>
+                    </div>
+                    <button onclick="addToCart('كرواسون بالزبدة والشكولاتة', 50)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+                <!-- Item 7: Sweets -->
+                <div class="menu-item bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition border border-coffee-200/60 flex flex-col justify-between" data-category="sweets">
+                    <div>
+                        <div class="relative overflow-hidden rounded-xl h-48 mb-4">
+                            <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=400" alt="تشيز كيك" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-amber-700/90 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">حلويات</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-coffee-900">تشيز كيك التوت</h3>
+                            <span class="text-lg font-extrabold text-coffee-800">80 ج.م</span>
+                        </div>
+                        <p class="text-xs text-coffee-600 mb-4 leading-relaxed">شريحة من التشيز كيك الكريمي الغني مع صوص التوت الأزرق الطبيعي.</p>
+                    </div>
+                    <button onclick="addToCart('تشيز كيك التوت', 80)" class="w-full py-2.5 bg-coffee-100 hover:bg-coffee-800 hover:text-white text-coffee-800 font-bold text-sm rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> إضافة للطلب
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Hours & Location Section / مواعيد العمل والموقع -->
+    <section id="hours" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Hours Card -->
+                <div class="bg-coffee-100/60 p-8 rounded-3xl border border-coffee-200 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-coffee-800 text-white flex items-center justify-center mb-6 text-xl">
+                            <i class="fa-regular fa-clock"></i>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-coffee-900 mb-2">مواعيد العمل اليومية</h3>
+                        <p class="text-sm text-coffee-600 mb-6">يسعدنا استقبالكم في فرعنا بالقاهرة طوال أيام الأسبوع.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-coffee-200">
+                                <span class="font-bold text-coffee-800">السبت - الخميس</span>
+                                <span class="text-sm bg-white px-3 py-1 rounded-full font-semibold text-coffee-700 shadow-sm">08:00 ص - 12:00 منتصف الليل</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-coffee-200">
+                                <span class="font-bold text-coffee-800">الجمعة</span>
+                                <span class="text-sm bg-white px-3 py-1 rounded-full font-semibold text-coffee-700 shadow-sm">01:00 ظهراً - 01:00 صباحاً</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-bold text-coffee-800">خدمة التوصيل</span>
+                                <span class="text-sm text-green-700 font-bold">متاحة طوال ساعات العمل</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-coffee-200/50 rounded-2xl flex items-center gap-3">
+                        <i class="fa-solid fa-circle-info text-coffee-700 text-xl"></i>
+                        <p class="text-xs text-coffee-800">ملاحظة: تتوفر لدينا خدمة Wi-Fi مجانية ومقابس للعمل المكتبي.</p>
+                    </div>
+                </div>
+
+                <!-- Location Info & Map Mock -->
+                <div id="location" class="bg-coffee-900 text-white p-8 rounded-3xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-coffee-700 text-amber-300 flex items-center justify-center mb-6 text-xl">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-white mb-2">موقعنا في القاهرة</h3>
+                        <p class="text-sm text-coffee-200 mb-6">زورونا في فرعنا واستمتعوا بالأجواء العصرية</p>
+
+                        <div class="space-y-4 text-sm text-coffee-100">
+                            <p class="flex items-center gap-3">
+                                <i class="fa-solid fa-map-pin text-amber-400 text-lg"></i>
+                                شارع المعز / وسط البلد (عنوان تجريبي)، القاهرة، مصر
+                            </p>
+                            <p class="flex items-center gap-3">
+                                <i class="fa-solid fa-phone text-amber-400 text-lg"></i>
+                                +20 100 000 0000 (رقم تجريبي)
+                            </p>
+                            <p class="flex items-center gap-3">
+                                <i class="fa-solid fa-envelope text-amber-400 text-lg"></i>
+                                info@espressocafe-cairo.com
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Map graphic mock -->
+                    <div class="mt-8 relative h-48 rounded-2xl overflow-hidden border border-coffee-700 bg-coffee-800 flex items-center justify-center text-center p-4">
+                        <div class="space-y-2">
+                            <i class="fa-solid fa-map-location-dot text-4xl text-amber-400/80"></i>
+                            <p class="text-xs text-coffee-200">خريطة تفاعلية تجريبية</p>
+                            <a href="https://maps.google.com" target="_blank" class="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-600 text-coffee-900 font-bold rounded-lg text-xs transition">
+                                فتح في خرائط جوجل
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp CTA Button / زر واتساب عائم -->
+    <a href="https://wa.me/201000000000" target="_blank" class="fixed bottom-6 right-6 z-40 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all transform hover:scale-110 group">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+        <span class="absolute right-16 bg-gray-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap shadow-md pointer-events-none">
+            تواصل معنا مباشرة!
+        </span>
+    </a>
+
+    <!-- Footer / الفوتر -->
+    <footer class="bg-coffee-900 text-coffee-200 pt-16 pb-8 border-t border-coffee-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-coffee-800">
+                
+                <!-- Col 1 -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3 space-x-reverse">
+                        <div class="w-9 h-9 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold">
+                            ☕
+                        </div>
+                        <span class="text-xl font-extrabold text-white">إسبريسو كافيه</span>
+                    </div>
+                    <p class="text-xs text-coffee-300 leading-relaxed">
+                        نحن نسعى لتقديم أجود أنواع القهوة المختصة مع خدمة راقية وأجواء هادئة في قلب العاصمة القاهرة.
+                    </p>
+                </div>
+
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#home" class="hover:text-amber-400 transition">الرئيسية</a></li>
+                        <li><a href="#about" class="hover:text-amber-400 transition">عن الكافيه</a></li>
+                        <li><a href="#menu" class="hover:text-amber-400 transition">قائمة الطعام والمشروبات</a></li>
+                        <li><a href="#hours" class="hover:text-amber-400 transition">ساعات العمل</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">تواصل معنا</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li>القاهرة، جمهورية مصر العربية</li>
+                        <li>هاتف: +20 100 000 0000</li>
+                        <li>البريد: info@espressocafe-cairo.com</li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4">تابعنا</h4>
+                    <div class="flex space-x-3 space-x-reverse text-lg">
+                        <a href="#" class="w-9 h-9 rounded-full bg-coffee-800 hover:bg-amber-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-coffee-800 hover:bg-amber-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-coffee-800 hover:bg-amber-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 text-center text-xs text-coffee-400 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>© 2026 كافيه الإسبريسو القاهرة. جميع الحقوق محفوظة.</p>
+                <p>تصميم مخصص - بيانات تجريبية قابلة التعديل</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal Overlay / نافذة سلة الطلبات التجريبية -->
+    <div id="cartModal" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-sm flex justify-end transition-opacity">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+            <div>
+                <div class="flex justify-between items-center pb-4 border-b border-coffee-200">
+                    <h3 class="text-xl font-bold text-coffee-900 flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-coffee-800"></i>
+                        سلة الطلبات التجريبية
+                    </h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600 p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cartItemsList" class="py-4 space-y-4">
+                    <p class="text-center text-coffee-500 py-8 text-sm">السلة فارغة حالياً. أضف بعض المشروبات من القائمة!</p>
+                </div>
+            </div>
+
+            <div class="border-t border-coffee-200 pt-4 space-y-4">
+                <div class="flex justify-between items-center text-lg font-extrabold text-coffee-900">
+                    <span>الإجمالي:</span>
+                    <span id="cartTotal">0 ج.م</span>
+                </div>
+                <button onclick="sendOrderViaWhatsApp()" class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    إرسال الطلب عبر الواتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript code / برمجيات الفلترة والتفاعل -->
+    <script>
+        // Toggle Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close Mobile Menu when clicking a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Filter Menu Tabs Functionality
+        function filterMenu(category) {
+            const items = document.querySelectorAll('.menu-item');
+            const tabs = document.querySelectorAll('.menu-tab-btn');
+
+            // Update Tab styles
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-category') === category) {
+                    tab.classList.add('bg-coffee-800', 'text-white');
+                    tab.classList.remove('text-coffee-800', 'hover:bg-coffee-200');
+                } else {
+                    tab.classList.remove('bg-coffee-800', 'text-white');
+                    tab.classList.add('text-coffee-800', 'hover:bg-coffee-200');
+                }
+            });
+
+            // Show/Hide items with animation
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Shopping Cart Logic
+        let cart = [];
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartItemsList');
+            const totalEl = document.getElementById('cartTotal');
+            const badge = document.getElementById('cartBadge');
+            const mobileBadge = document.getElementById('mobileCartBadge');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Update badges
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+                mobileBadge.innerText = totalItems;
+                mobileBadge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                mobileBadge.classList.add('hidden');
+            }
+
+            // Update Total
+            totalEl.innerText = totalPrice + ' ج.م';
+
+            // Render Items
+            if (cart.length === 0) {
+                list.innerHTML = '<p class="text-center text-coffee-500 py-8 text-sm">السلة فارغة حالياً. أضف بعض المشروبات من القائمة!</p>';
+                return;
+            }
+
+            list.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between p-3 bg-coffee-50 rounded-xl border border-coffee-100">
+                    <div>
+                        <h5 class="font-bold text-coffee-900 text-sm">${item.name}</h5>
+                        <p class="text-xs text-coffee-600">${item.price} ج.م × ${item.quantity}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-coffee-800 text-sm">${item.price * item.quantity} ج.م</span>
+                        <button onclick="removeFromCart('${item.name}')" class="text-red-500 hover:text-red-700 text-xs p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function sendOrderViaWhatsApp() {
+            if (cart.length === 0) {
+                alert('سلتك فارغة! أضف بعض العناصر أولاً.');
+                return;
+            }
+            
+            let message = "مرحباً كافيه الإسبريسو، أرغب في طلب الاتي:\n";
+            cart.forEach(item => {
+                message += `- ${item.name} (عدد: ${item.quantity}) - ${item.price * item.quantity} ج.م\n`;
+            });
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            message += `\nالإجمالي: ${totalPrice} ج.م`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/201000000000?text=${encodedMessage}`, '_blank');
+        }
+    </script>
+</body>
+</html>
