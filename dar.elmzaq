@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم دار المذاق | أصل الحكاية في طعم الأكل</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            olive: '#2C3A2E',
+                            oliveDark: '#1E2820',
+                            cream: '#FDFBF7',
+                            creamDark: '#F4EFE6',
+                            terracotta: '#C85A32',
+                            terracottaHover: '#B04B26',
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #FDFBF7; color: #1E2820; }
+        .glass-header { background: rgba(44, 58, 46, 0.95); backdrop-filter: blur(10px); }
+        .badge-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-terracotta selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 glass-header text-white transition-all duration-300 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-full bg-brand-terracotta flex items-center justify-center text-brand-gold text-xl shadow-inner group-hover:scale-105 transition-transform">
+                        <i class="fa-solid font-bold fa-utensils"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-wide block text-brand-cream">دار المذاق</span>
+                        <span class="text-[10px] text-brand-gold tracking-wider block -mt-1 font-semibold">مأكولات مصرية أصيلة</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8 font-semibold text-sm">
+                    <a href="#hero" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">الرئيسية</a>
+                    <a href="#specialties" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">أطباقنا المميزة</a>
+                    <a href="#menu" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">قائمة الطعام</a>
+                    <a href="#story" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">قصتنا</a>
+                    <a href="#reviews" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">آراء العملاء</a>
+                    <a href="#contact" class="hover:text-brand-gold transition-colors py-1 border-b-2 border-transparent hover:border-brand-gold">تواصل معنا</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button onclick="toggleCartModal()" class="relative p-2.5 rounded-full bg-brand-oliveDark hover:bg-brand-terracotta transition-colors text-white">
+                        <i class="fa-solid fa-basket-shopping text-lg"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-brand-terracotta text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <a href="#menu" class="bg-brand-terracotta hover:bg-brand-terracottaHover text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                        اطلب الآن
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center gap-3 md:hidden">
+                    <button onclick="toggleCartModal()" class="relative p-2 rounded-full bg-brand-oliveDark text-white">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <span id="cart-count-mobile" class="absolute -top-1 -right-1 bg-brand-terracotta text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-2xl p-2 focus:outline-none text-brand-cream">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-oliveDark border-b border-white/10 px-4 pt-2 pb-6">
+            <nav class="flex flex-col gap-4 font-semibold text-base mt-2">
+                <a href="#hero" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">الرئيسية</a>
+                <a href="#specialties" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">أطباقنا المميزة</a>
+                <a href="#menu" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">قائمة الطعام</a>
+                <a href="#story" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">قصتنا</a>
+                <a href="#reviews" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">آراء العملاء</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="hover:text-brand-gold transition-colors">تواصل معنا</a>
+                <a href="#menu" onclick="toggleMobileMenu()" class="bg-brand-terracotta text-white text-center py-3 rounded-xl font-bold mt-2">
+                    اطلب الآن
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative bg-brand-olive text-white py-16 lg:py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Content -->
+                <div class="space-y-6 text-center lg:text-right">
+                    <span class="inline-flex items-center gap-2 bg-brand-terracotta/20 text-brand-gold border border-brand-gold/30 px-4 py-1.5 rounded-full text-sm font-semibold">
+                        <i class="fa-solid fa-crown text-xs"></i> طعم البيت المصري بلمسة عصرية
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight text-brand-cream">
+                        أصل الحكاية... <br>
+                        <span class="text-brand-gold">في طعم الأكل</span>
+                    </h1>
+                    <p class="text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        أكلات مصرية بطعم البيت، بمكونات مختارة ولمسة عصرية. نعدّ كل طبق بحب وعناية لنأخذك في رحلة إلى أعماق المذاق الاصيل.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#menu" class="w-full sm:w-auto bg-brand-terracotta hover:bg-brand-terracottaHover text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-brand-terracotta/40 hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <span>استكشف قائمة الطعام</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                        <a href="https://wa.me/201000000000?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%AF%D8%A7%D8%B1%20%D8%A7%D9%84%D9%85%D8%B0%D8%A7%D9%82%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%B3%D8%A4%D8%A7%D9%84%20%D8%B9%D9%86%20%D8%A7%D9%84%D9%82%D8%A7%D8%A6%D9%85%D8%A9" target="_blank" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-md flex items-center justify-center gap-3 border border-emerald-500/30">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                            <span>اطلب عبر واتساب</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Image -->
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-brand-gold to-brand-terracotta rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+                    <div class="relative rounded-3xl overflow-hidden border-4 border-brand-gold/20 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80" alt="سفرة طعام مصرية فاخرة" class="w-full h-[400px] lg:h-[500px] object-cover hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
+                            <div class="text-white">
+                                <p class="text-sm font-semibold text-brand-gold">طبق اليوم الخاص</p>
+                                <p class="text-xl font-bold">مشويات مشكلة على الفحم الحجري</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialties Section -->
+    <section id="specialties" class="py-20 bg-brand-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-brand-terracotta font-bold text-sm tracking-widest uppercase">الأكثر طلباً</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-olive mt-2">حكاية كل طبق</h2>
+                <div class="w-16 h-1 bg-brand-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Dish 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-brand-creamDark flex flex-col">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=800&q=80" alt="كفتة مشوية" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 right-4 bg-brand-olive text-brand-gold text-xs font-bold px-3 py-1.5 rounded-full shadow">مفضل الزوار</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold text-brand-olive">كفتة مشوية</h3>
+                                <span class="text-xl font-black text-brand-terracotta">180 ج.م</span>
+                            </div>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">لحم بلدي طازج مفروم مع التوابل المصرية الخاصة، مشوي على الفحم مع الخضار المشوي والأرز.</p>
+                        </div>
+                        <button onclick="addToCart('كفتة مشوية', 180)" class="w-full bg-brand-creamDark hover:bg-brand-terracotta hover:text-white text-brand-olive font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>إضافة للطلب</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dish 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-brand-creamDark flex flex-col">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80" alt="ملوخية مصرية بالفراخ" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 right-4 bg-brand-terracotta text-white text-xs font-bold px-3 py-1.5 rounded-full shadow">بالطشة السحرية</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold text-brand-olive">ملوخية بالفراخ</h3>
+                                <span class="text-xl font-black text-brand-terracotta">140 ج.م</span>
+                            </div>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">ملوخية خضراء طازجة بطشة الثوم والكسبرة على أصولها، تقدم مع نصف فرخة محمرة وأرز بالشعرية.</p>
+                        </div>
+                        <button onclick="addToCart('ملوخية بالفراخ', 140)" class="w-full bg-brand-creamDark hover:bg-brand-terracotta hover:text-white text-brand-olive font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>إضافة للطلب</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dish 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-brand-creamDark flex flex-col">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=800&q=80" alt="فتة لحمة" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 right-4 bg-brand-gold text-brand-oliveDark text-xs font-bold px-3 py-1.5 rounded-full shadow">طبق المناسبات</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold text-brand-olive">فتة لحمة بلدي</h3>
+                                <span class="text-xl font-black text-brand-terracotta">220 ج.م</span>
+                            </div>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">طبقات من العيش المحمص والأرز الأبيض مع صوص الصلصة بالثوم والخل، يعلوها قطعتان من اللحم الضأن المحمر.</p>
+                        </div>
+                        <button onclick="addToCart('فتة لحمة بلدي', 220)" class="w-full bg-brand-creamDark hover:bg-brand-terracotta hover:text-white text-brand-olive font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>إضافة للطلب</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Menu Section -->
+    <section id="menu" class="py-20 bg-brand-creamDark/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-olive">قائمة الطعام</h2>
+                <p class="text-gray-600 mt-2 font-semibold">تصفح تشكيلة أطباقنا اللذيذة واطلب مباشرة عبر واتساب</p>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterMenu('all')" class="menu-tab active bg-brand-olive text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-md">الكل</button>
+                <button onclick="filterMenu('grill')" class="menu-tab bg-white text-brand-olive hover:bg-brand-olive hover:text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm">المشويات</button>
+                <button onclick="filterMenu('egyptian')" class="menu-tab bg-white text-brand-olive hover:bg-brand-olive hover:text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm">الأطباق المصرية</button>
+                <button onclick="filterMenu('starters')" class="menu-tab bg-white text-brand-olive hover:bg-brand-olive hover:text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm">المقبلات</button>
+                <button onclick="filterMenu('desserts')" class="menu-tab bg-white text-brand-olive hover:bg-brand-olive hover:text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm">الحلويات</button>
+                <button onclick="filterMenu('drinks')" class="menu-tab bg-white text-brand-olive hover:bg-brand-olive hover:text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm">المشروبات</button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div id="menu-items-container" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Items populated via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="py-20 bg-brand-olive text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1 relative">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="مطبخ دار المذاق" class="rounded-3xl shadow-2xl border-4 border-brand-gold/30 w-full h-[400px] object-cover">
+                </div>
+                <div class="order-1 lg:order-2 space-y-6">
+                    <span class="text-brand-gold font-bold text-sm tracking-widest uppercase">حكايتنا</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-brand-cream">نحتفي بالمذاق المصري الأصيل</h2>
+                    <p class="text-gray-300 leading-relaxed font-normal">
+                        تأسست "دار المذاق" لتقديم تجربة طعام تحتفي بالهوية المصرية الأصيلة. نجمع بين وصفات الجدات التي تتوارثها الأجيال وبين طرق التقديم المعاصرة التي تليق بعائلتك وضيوفك.
+                    </p>
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-terracotta flex items-center justify-center text-white shrink-0 mt-1">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-brand-gold">اهتمام بتفاصيل كل طبق</h4>
+                                <p class="text-sm text-gray-300">نختار المكونات يومياً طازجة لضمان أعلى جودة وطعم لا يُنسى.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-terracotta flex items-center justify-center text-white shrink-0 mt-1">
+                                <i class="fa-solid fa-leaf"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-brand-gold">قائمة متنوعة بطابع مصري</h4>
+                                <p class="text-sm text-gray-300">تجمع القائمة بين المشويات والوجبات الشرقية والمقبلات والحلويات.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-terracotta flex items-center justify-center text-white shrink-0 mt-1">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-brand-gold">تجربة مريحة لكل أفراد العائلة</h4>
+                                <p class="text-sm text-gray-300">أجواء دافئة وضيافة مصرية كريمة ترحب بك وبأسرتك في كل وقت.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-brand-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-brand-terracotta font-bold text-sm uppercase">شهادات تجريبية</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-olive mt-2">كلام يفرحنا</h2>
+                <div class="w-16 h-1 bg-brand-gold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-brand-creamDark flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-brand-gold gap-1 mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed italic mb-6">"الطعم بجد يفكرك بأكل البيت الزمان. الملوخية بالذات كانت تحفة وطشة الثوم مضبوطة جداً."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-brand-creamDark flex items-center justify-center text-brand-olive font-bold">أ.م</div>
+                        <div>
+                            <h4 class="font-bold text-brand-olive text-sm">أحمد محمود</h4>
+                            <span class="text-xs text-gray-400">ناقد طعام تجريبي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-brand-creamDark flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-brand-gold gap-1 mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed italic mb-6">"الكفتة المشوية كانت طرية والتتبيلة ممتازة، والخدمة سريعة والتغليف في الدليفري احترافي."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-brand-creamDark flex items-center justify-center text-brand-olive font-bold">س.ع</div>
+                        <div>
+                            <h4 class="font-bold text-brand-olive text-sm">سارة علي</h4>
+                            <span class="text-xs text-gray-400">عميل تجريبي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-brand-creamDark flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-brand-gold gap-1 mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed italic mb-6">"أفضل تجربة فتة باللحمة البلدي جربتها من فترة، والحلويات أم علي ختامها مسك."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-brand-creamDark flex items-center justify-center text-brand-olive font-bold">م.ح</div>
+                        <div>
+                            <h4 class="font-bold text-brand-olive text-sm">محمود حسن</h4>
+                            <span class="text-xs text-gray-400">عميل تجريبي</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Location Section -->
+    <section id="contact" class="py-20 bg-brand-creamDark/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12">
+                
+                <div class="space-y-8">
+                    <div>
+                        <span class="text-brand-terracotta font-bold text-sm uppercase">تواصل معنا</span>
+                        <h2 class="text-3xl sm:text-4xl font-black text-brand-olive mt-2">زورنا أو اطلب لمكانك</h2>
+                        <p class="text-gray-600 mt-2">نسعد بخدمتكم وتلبية طلباتكم طوال أيام الأسبوع</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-olive text-brand-gold flex items-center justify-center shrink-0 text-xl">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-brand-olive text-lg">العنوان (افتراضي)</h4>
+                                <p class="text-gray-600 text-sm mt-1">شارع المعز لدين الله الفاطمي، القاهرة، مصر</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-olive text-brand-gold flex items-center justify-center shrink-0 text-xl">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-brand-olive text-lg">مواعيد العمل</h4>
+                                <p class="text-gray-600 text-sm mt-1">يومياً من الساعة 12:00 ظهراً حتى 12:00 منتصف الليل</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-olive text-brand-gold flex items-center justify-center shrink-0 text-xl">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-brand-olive text-lg">الهاتف للتواصل والطلبات</h4>
+                                <p class="text-gray-600 text-sm mt-1">+20 100 000 0000 (رقم افتراضي)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="https://maps.google.com" target="_blank" class="bg-brand-olive hover:bg-brand-oliveDark text-white px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>افتح خرائط جوجل</span>
+                        </a>
+                        <a href="https://wa.me/201000000000" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            <span>محادثة واتساب مباشرة</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Google Maps Placeholder Box -->
+                <div class="bg-white rounded-3xl p-4 shadow-xl border border-gray-200 h-[400px] lg:h-auto flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-brand-olive/5 flex items-center justify-center">
+                        <div class="space-y-4 p-6">
+                            <i class="fa-solid fa-map-pin text-5xl text-brand-terracotta"></i>
+                            <h3 class="text-xl font-bold text-brand-olive">خريطة الموقع التوضيحية</h3>
+                            <p class="text-sm text-gray-500 max-w-xs">يمكنك ربط هذا الصندوق بإطار خريطة جوجل الحقيقي (Google Maps Embed) بسهولة عند استلام المكان الميداني المطابق.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-oliveDark text-white pt-16 pb-8 border-t border-brand-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 pb-12 border-b border-white/10">
+                
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-brand-terracotta flex items-center justify-center text-brand-gold text-lg">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <span class="text-2xl font-black text-brand-cream">دار المذاق</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">مطعم مصري عالي الجودة يقدم أشهر الأطباق التقليدية بطعم البيت الأصيل ولمسات عصرية راقية.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-brand-gold text-lg mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#hero" class="hover:text-brand-gold">الرئيسية</a></li>
+                        <li><a href="#specialties" class="hover:text-brand-gold">الأطباق المميزة</a></li>
+                        <li><a href="#menu" class="hover:text-brand-gold">قائمة الطعام</a></li>
+                        <li><a href="#story" class="hover:text-brand-gold">حكايتنا</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-brand-gold text-lg mb-4">معلومات التواصل</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li>القاهرة، مصر (عنوان افتراضي)</li>
+                        <li>هاتف: 01000000000</li>
+                        <li>بريد: info@darelmthaq-demo.com</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-brand-gold text-lg mb-4">تابعنا على التواصل</h4>
+                    <div class="flex gap-3 text-lg">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-brand-terracotta flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-brand-terracotta flex items-center justify-center transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-brand-terracotta flex items-center justify-center transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 text-center text-xs text-gray-500 space-y-2">
+                <p>جميع الحقوق محفوظة © 2026 مطعم دار المذاق (نسخة تجريبية للعرض والتقديم)</p>
+                <p>تنبيه: البيانات والأسعار الموضحة بالموقع هي بيانات توضيحية تجريبية تحتاج للمراجعة عند الاعتماد التجاري الفعلي.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b">
+                    <h3 class="text-xl font-bold text-brand-olive flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-brand-terracotta"></i>
+                        <span>سلة الطلبات التجريبية</span>
+                    </h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+                </div>
+
+                <div id="cart-items" class="py-6 space-y-4">
+                    <!-- Cart items rendered dynamically -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t space-y-4">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span class="text-brand-olive">إجمالي الطلب:</span>
+                    <span id="cart-total" class="text-brand-terracotta">0 ج.م</span>
+                </div>
+                <p class="text-xs text-gray-500">سيتم فتح تطبيق واتساب وإرسال ملخص الطلب مجهزاً برسالة تفصيلية تلقائياً.</p>
+                <button onclick="sendOrderWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    <span>إرسال الطلب عبر واتساب</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201000000000" target="_blank" class="fixed bottom-6 left-6 z-30 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-3xl transition-transform hover:scale-110">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- JavaScript Data and Functions -->
+    <script>
+        const phonePlaceholder = "201000000000"; // International code without plus or spaces
+
+        const menuData = [
+            { id: 1, name: "كفتة مشوية بلدي", category: "grill", price: 180, desc: "لحم بلدي مفروم متبل بالأعشاب والبهارات الشرقية المشوية على الفحم.", img: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=500&q=80" },
+            { id: 2, name: "شيـش طاووق فاخر", category: "grill", price: 160, desc: "قطع صدور الدجاج المتبلة بالزبادي والليمون مع الفلفل الألوان والمشوية.", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=500&q=80" },
+            { id: 3, name: "ملوخية بالفراخ", category: "egyptian", price: 140, desc: "ملوخية خضراء بطشة الثوم والكسبرة تقدم مع نصف فرخة وأرز بالشعرية.", img: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=500&q=80" },
+            { id: 4, name: "فتة لحمة ضأن", category: "egyptian", price: 220, desc: "عيش محمص مع الأرز الأبيض وصوص الخل والثوم يعلوها لحم ضأن محمر.", img: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=500&q=80" },
+            { id: 5, name: "حواوشي بلدي مخصوص", category: "egyptian", price: 90, desc: "خبز بلدي محشو باللحم المفروم المتبل والمطبوخ في الفرن الخشبي.", img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80" },
+            { id: 6, name: "شوربة لسان عصفور", category: "starters", price: 40, desc: "شوربة دافئة غنية بلسان العصفور المحمر ومرقة الدجاج الطازجة.", img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=500&q=80" },
+            { id: 7, name: "طاجن أم علي بالمكسرات", category: "desserts", price: 65, desc: "رقائق الخبز بالبن والقشطة البلدي والمكسرات المحمصة في الفرن.", img: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=500&q=80" },
+            { id: 8, name: "عصير قصب طازج / عصير مانجو", category: "drinks", price: 35, desc: "عصائر طبيعية طازجة منعشة بدون إضافة مواد حافظة.", img: "https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?auto=format&fit=crop&w=500&q=80" }
+        ];
+
+        let cart = [];
+
+        function renderMenuItems(items) {
+            const container = document.getElementById('menu-items-container');
+            container.innerHTML = items.map(item => `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-brand-creamDark flex flex-col justify-between hover:shadow-xl transition-shadow">
+                    <div>
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-brand-olive">${item.name}</h3>
+                                <span class="text-brand-terracotta font-black text-base whitespace-nowrap">${item.price} ج.م</span>
+                            </div>
+                            <p class="text-gray-500 text-xs leading-relaxed mb-4">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <button onclick="addToCart('${item.name}', ${item.price})" class="w-full bg-brand-creamDark hover:bg-brand-terracotta hover:text-white text-brand-olive font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>اطلب الطبق</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMenu(category) {
+            document.querySelectorAll('.menu-tab').forEach(btn => {
+                btn.classList.remove('bg-brand-olive', 'text-white');
+                btn.classList.add('bg-white', 'text-brand-olive');
+            });
+            event.target.classList.remove('bg-white', 'text-brand-olive');
+            event.target.classList.add('bg-brand-olive', 'text-white');
+
+            if (category === 'all') {
+                renderMenuItems(menuData);
+            } else {
+                renderMenuItems(menuData.filter(i => i.category === category));
+            }
+        }
+
+        function addToCart(name, price) {
+            const existing = cart.find(i => i.name === name);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            toggleCartModal(true);
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalCount = cart.reduce((acc, i) => acc + i.qty, 0);
+            const totalPrice = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+
+            document.getElementById('cart-count').innerText = totalCount;
+            document.getElementById('cart-count-mobile').innerText = totalCount;
+            document.getElementById('cart-total').innerText = totalPrice + ' ج.م';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `<p class="text-center text-gray-400 py-8">السلة فارغة حالياً</p>`;
+                return;
+            }
+
+            cartItemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="flex items-center justify-between p-3 bg-brand-cream rounded-xl border border-brand-creamDark">
+                    <div>
+                        <h4 class="font-bold text-sm text-brand-olive">${item.name}</h4>
+                        <p class="text-xs text-brand-terracotta font-semibold">${item.price} ج.م × ${item.qty}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-white rounded-lg font-bold shadow hover:bg-gray-100">-</button>
+                        <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-white rounded-lg font-bold shadow hover:bg-gray-100">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartModal(show = null) {
+            const modal = document.getElementById('cart-modal');
+            if (show === true) modal.classList.remove('hidden');
+            else if (show === false) modal.classList.add('hidden');
+            else modal.classList.toggle('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert('السلة فارغة! اختر بعض الأطباق أولاً.');
+                return;
+            }
+            let message = "مرحباً مطعم دار المذاق 🍽️\nأرغب في طلب الأطباق التالية:\n\n";
+            cart.forEach(item => {
+                message += `- ${item.name} (عدد: ${item.qty}) -> ${item.price * item.qty} ج.م\n`;
+            });
+            const total = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
+            message += `\nإجمالي الطلب: ${total} ج.م\n\nشكراً لكم!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phonePlaceholder}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Initial setup
+        renderMenuItems(menuData);
+    </script>
+</body>
+</html>
